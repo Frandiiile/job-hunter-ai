@@ -1,0 +1,132 @@
+\documentclass{resume}
+
+\usepackage[left=0.4 in,top=0.4in,right=0.4 in,bottom=0.4in]{geometry}
+\newcommand{\tab}[1]{\hspace{.2667\textwidth}\rlap{#1}} 
+\newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+
+\name{Aimane FRANDILE}
+\address{+33 7 45 58 26 40 \\ Saint-Étienne / Lyon, FR}
+\address{\href{mailto:frandile.aimane@gmail.com}{frandile.aimane@gmail.com} \\
+\href{https://www.linkedin.com/in/aimane-frandile/}{LinkedIn} \\
+\href{https://frandiiile.github.io/my-portfolio/}{Portfolio}}
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	PROFILE
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{PROFILE}
+
+Data Engineer with 2+ years of experience designing and operating production-grade
+data pipelines in cloud environments (AWS \& GCP). Specialized in scalable data
+architectures, Airflow and DevOps practices.
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{Education}
+
+{\bf Master of Computer Science – Big Data}, Paris 8 University \hfill {2025}\\
+Distributed Systems, Spark, Data Pipelines, DevOps, Cloud Architectures
+
+{\bf Engineering Degree in Data Engineering}, ENSIAS \hfill {2020 -- 2023}
+
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+% SKILLS
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{TECHNICAL SKILLS}
+
+\begin{tabular}{ @{} >{\bfseries}l @{\hspace{6ex}} l }
+
+Programming &
+Python, SQL, Java \\
+
+Databases &
+PostgreSQL (modeling, indexing, query optimization), BigQuery \\
+
+Data Engineering &
+Airflow, ETL/ELT pipelines, batch processing, data modeling,
+data quality \\
+
+Cloud &
+AWS (S3, IAM), GCP (GCS, BigQuery), Databricks \\
+
+DevOps &
+Docker, CI/CD, Terraform, monitoring, logging \\
+
+Architecture &
+Data Lakehouse (Bronze/Silver/Gold), scalable data pipelines \\
+
+\end{tabular}
+
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+% EXPERIENCE
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{EXPERIENCE}
+
+\textbf{Data Engineer} \hfill Aug 2024 -- Sep 2025\\
+Socotec \hfill \textit{Paris, FR}
+\begin{itemize}
+  \itemsep -2pt {}
+  \item Designed and operated production data pipelines (PySpark + Airflow) within
+        an AWS/Databricks environment.
+  \item Migrated on-premise Data Lake to AWS, improving reliability and reducing
+        production incidents by 90\%.
+  \item Modeled analytical datasets and optimized SQL performance for Finance stakeholders.
+  \item Implemented CI/CD practices, monitoring, and automated testing to stabilize
+        data flows in production.
+\end{itemize}
+
+\textbf{Big Data Engineer (Full-Time \& Internship)} \hfill Feb 2023 -- Aug 2024\\
+Leyton \hfill \textit{Casablanca, MA}
+\begin{itemize}
+  \itemsep -2pt {}
+  \item Built scalable ELT pipelines (Airflow, PySpark) on GCP (BigQuery, GCS).
+  \item Designed Bronze/Silver/Gold data architecture and ensured data quality controls.
+  \item Integrated multi-source data (APIs, SFTP, CRM) and optimized SQL transformations.
+\end{itemize}
+
+\textbf{Process Analyst Intern} \hfill May 2022 -- Aug 2022\\
+Bourse de Casablanca \hfill \textit{Casablanca, MA}
+\begin{itemize}
+  \itemsep -2pt {}
+  \item Automated financial reporting and data analysis using Python and SQL (PostgreSQL).
+\end{itemize}
+
+\textbf{Financial Data Analyst Intern} \hfill Jun 2021 -- Aug 2021\\
+Wafa Gestion \hfill \textit{Casablanca, MA}
+\begin{itemize}
+  \itemsep -2pt {}
+  \item Analyzed portfolio performance and risk metrics, automating structured financial reporting workflows.
+\end{itemize}
+
+
+\end{rSection}
+
+%----------------------------------------------------------------------------------------
+% PROJECTS
+%----------------------------------------------------------------------------------------
+
+\begin{rSection}{PROJECTS}
+
+\item \textbf{AskMyData (NL → SQL).}
+Developed a FastAPI application enabling natural language querying of
+PostgreSQL databases using RAG (pgvector + OpenAI API),
+with secure read-only SQL execution and Dockerized deployment.
+
+
+\item \textbf{Snowflake + DBT Pipeline.}
+Built a cloud data pipeline using Snowflake and DBT for analytical transformations and version-controlled deployments.
+
+\end{rSection}
+
+\end{document}

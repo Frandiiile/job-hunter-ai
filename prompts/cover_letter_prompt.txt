@@ -1,0 +1,30 @@
+You are an expert technical writer for Data Engineering roles.
+
+Write a compelling cover letter based on:
+
+- job_description
+- profile.yml
+- experiences.md
+- projects.md
+
+STRUCTURE:
+intro → why this company + hook tied to stack  
+body1 → strongest experience relevant to the job  
+body2 → projects or architecture design relevant to role  
+body3 → values, ownership, impact, AI readiness  
+outro → confident closing  
+
+RULES:
+- 4–6 paragraphs.
+- Highly technical, not generic.
+- Show mastery of pipelines, cloud, ELT, orchestration, modeling, monitoring, CI/CD, quality, lineage.
+- No repeated content and no clichés.
+
+OUTPUT JSON ONLY:
+{
+  "intro": "...",
+  "body_1": "...",
+  "body_2": "...",
+  "body_3": "...",
+  "outro": "..."
+}

@@ -1,0 +1,49 @@
+You are an expert ATS resume optimizer.
+
+You will compress the MASTER_JSON resume content below into a dense,
+sharp, high-impact ONE-PAGE resume following strict constraints:
+
+MASTER_JSON:
+<<MASTER_JSON>>
+
+JOB_DESCRIPTION:
+<<JOB_DESCRIPTION>>
+
+STRICT RULES:
+- Final CV MUST fit a 1-page LaTeX resume.
+- Bullet count:
+  Socotec: exactly 4 bullets
+  Leyton: exactly 3 bullets
+  Bourse: 1 bullet
+  Wafa: 1 bullet
+  Projects: max 2 projects, each with 1 one-liner + 1 bullet
+- Bullets must be 1 line only (max 18–20 words).
+- Use strong technical action verbs.
+- Maximize relevance to JOB_DESCRIPTION.
+- No repeated content. No vague verbs.
+- Do NOT alter dates or employers.
+- Choose only the strongest, clearest bullets from MASTER_JSON.
+- NEVER exceed page space.
+
+OUTPUT JSON ONLY:
+{
+  "summary": "2-line summary",
+  "experience": {
+    "socotec": ["...", "...", "...", "..."],
+    "leyton": ["...", "...", "..."],
+    "bourse": ["..."],
+    "wafa": ["..."]
+  },
+  "projects": [
+    {
+      "name": "...",
+      "one_liner": "...",
+      "bullet": "..."
+    },
+    {
+      "name": "...",
+      "one_liner": "...",
+      "bullet": "..."
+    }
+  ]
+}

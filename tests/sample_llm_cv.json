@@ -1,0 +1,24 @@
+{
+  "summary": "Data Engineer with 2+ years building production pipelines (Airflow, PySpark, Databricks, AWS/GCP) and strong SQL optimization.",
+  "experience": {
+    "socotec": [
+      "Migrated production PySpark pipelines to Databricks on AWS with Airflow orchestration.",
+      "Implemented data quality checks and monitoring to stabilize critical finance workflows.",
+      "Designed incremental ELT patterns and optimized SQL datasets for Finance stakeholders.",
+      "Improved operational reliability by adding retries, alerting, and observability."
+    ],
+    "leyton": [
+      "Built scalable ELT pipelines using PySpark and Airflow on GCP (BigQuery, GCS).",
+      "Integrated multi-source data (APIs, SFTP, CRM) and standardized analytics datasets.",
+      "Implemented data quality controls and optimized SQL transformations for reporting."
+    ],
+    "bourse": "Automated financial reporting workflows using Python and SQL (PostgreSQL).",
+    "wafa": "Automated portfolio performance and risk analysis with reproducible data preparation."
+  },
+  "projects": [
+    {
+      "name": "AskMyData (NL → SQL)",
+      "bullet": "Built FastAPI app with RAG (pgvector) for safe read-only SQL over PostgreSQL; Dockerized."
+    }
+  ]
+}

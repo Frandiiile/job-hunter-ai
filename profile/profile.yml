@@ -1,0 +1,118 @@
+identity:
+  name: Aimane Frandile
+  location: Lyon, France or Paris, France
+  mobility: EU
+  languages:
+    - French (native)
+    - English (professional)
+
+positioning:
+  primary_role: Data Engineer
+  secondary_strengths:
+    - Data Analytics
+    - Data Science
+    - Python Development
+
+seniority:
+  total_years_experience: 2
+  acceptable_roles:
+    - Data Engineer
+    - Cloud Data Engineer
+    - Analytics Engineer
+    - Data Platform Engineer
+  excluded_roles:
+    - Internship
+    - Alternance
+    - Apprenticeship
+
+technical_stack:
+
+  programming:
+    strong:
+      - Python
+      - SQL (advanced: window functions, optimization, execution plans)
+    good:
+      - PySpark
+    working_knowledge:
+      - Java
+      - Scala
+      - JavaScript
+
+  data_engineering:
+    - ELT pipelines
+    - Data Lake architecture
+    - Lakehouse modeling (Bronze / Silver / Gold)
+    - Incremental loading strategies
+    - Batch and streaming architectures
+    - Data quality monitoring
+    - Schema evolution handling
+    - Data lineage principles
+    - Data contract awareness
+
+  streaming:
+    - Kafka
+    - Spark Structured Streaming
+
+  analytics:
+    - Dimensional modeling (star / snowflake schema)
+    - BI-ready dataset design
+    - KPI definition
+    - Dashboard data preparation
+    - Business requirement translation
+
+  data_science:
+    - Exploratory data analysis
+    - Feature engineering
+    - Basic machine learning models
+    - Forecasting
+
+  cloud_platforms:
+    - AWS
+    - GCP
+    - Azure
+
+  data_platforms:
+    strong:
+      - Databricks
+      - Delta Lake
+    good:
+      - BigQuery
+      - Snowflake
+
+  devops:
+    good:
+      - Docker
+      - Terraform
+      - CI/CD
+    working_knowledge:
+      - Kubernetes
+      - Jenkins
+    version_control:
+      - Git
+
+  data_testing:
+    - Unit testing for pipelines
+    - Integration testing
+    - Data validation frameworks
+    - CI integration for data workflows
+
+architecture_experience:
+  - On-premise to cloud migration (Databricks + AWS S3)
+  - Lakehouse architecture design
+  - Production pipeline stabilization and monitoring
+  - Infrastructure-as-Code with Terraform
+  - Streaming pipeline design with Kafka
+  - Cost optimization strategies (compute + storage)
+  - Data warehouse integration (BigQuery, Snowflake)
+
+domain_exposure:
+  - Finance analytics
+  - Marketing analytics
+  - SaaS analytics
+
+strengths:
+  - Strong SQL optimization mindset
+  - Scalable pipeline design thinking
+  - Structured and production-oriented development
+  - Balancing engineering rigor with analytics value
+  - Cost-aware architecture decisions
