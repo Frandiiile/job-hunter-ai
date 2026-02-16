@@ -1,255 +1,348 @@
-# Job Hunter AI – Automated Resume and Cover Letter Generation
+# Job Hunter AI
 
-[![CI Pipeline](https://github.com/YOUR_USERNAME/job-hunter-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/job-hunter-ai/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/Frandiiile/job-hunter-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Frandiiile/job-hunter-ai/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Job Hunter AI is an end-to-end automation system designed to streamline the job application process for Data Engineering roles.
-It automates job ingestion, filtering, scoring, and the generation of tailored resumes and cover letters using LaTeX and LLMs (Groq).
+> Automated resume and cover letter generation system for Data Engineering roles using AI and LaTeX
 
-The goal of the system is to eliminate repetitive manual application tasks and to produce high-quality, role-specific application documents.
-
----
-
-## 1. Overview
-
-The system performs the following tasks:
-
-1. Automatically fetch job listings from external APIs (currently Adzuna).
-2. Filter and classify job posts using a deterministic rule engine.
-3. Score each job using a hybrid method (deterministic logic + LLM evaluation).
-4. Generate structured, high-detail JSON describing:
-   - Tailored CV content  
-   - Tailored cover letter content  
-   - Selected technical bullets  
-   - Selected project bullets  
-5. Render LaTeX templates into `.tex` files (one-page resume and cover letter).
-6. Optionally upload outputs to Google Drive.
-7. Track job pipeline state using Google Sheets.
-8. Prepare for orchestration with n8n.
-
-The project is modular and designed for extension to multiple job sources, LLM providers, and resume templates.
+Job Hunter AI is an end-to-end automation system that streamlines the job application process. It automates job ingestion, filtering, scoring, and generates tailored resumes and cover letters using LLMs (Groq) and LaTeX templates.
 
 ---
 
-## 2. Architecture
+## 🚀 Quick Start
 
+### Prerequisites
+- Python 3.10 or higher
+- Groq API key ([get one here](https://console.groq.com/))
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Frandiiile/job-hunter-ai.git
+   cd job-hunter-ai
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your GROQ_API_KEY
+   ```
+
+4. **Verify installation**
+   ```bash
+   python -m pytest tests/test_imports.py -v
+   ```
+
+---
+
+## 📋 Features
+
+- ✅ **Automated Job Ingestion** - Fetch jobs from Adzuna API
+- ✅ **Smart Filtering** - Rule-based filtering for junior/mid-level roles
+- ✅ **Hybrid Scoring** - Deterministic + LLM scoring (0-100)
+- ✅ **AI-Powered Generation** - Tailored CVs and cover letters via Groq LLM
+- ✅ **LaTeX Templates** - Professional document rendering
+- ✅ **Google Sheets Integration** - Track application pipeline
+- ✅ **CI/CD Pipeline** - Automated testing and quality checks
+- 🔄 **n8n Integration** (Planned) - Full workflow orchestration
+
+---
+
+## 🏗️ Project Structure
+
+```
 job-hunter-ai/
-├── src/
-│ ├── job_hunter_ai/
-│ │ ├── llm/
-│ │ │ └── enrich.py
-│ │ ├── latex/
-│ │ │ └── render_template.py
-│ │ ├── scoring/
-│ │ │ └── scoring.py
-│ │ ├── ingestion/
-│ │ │ └── ingest_adzuna.py
-│ │ └── utils/
-│ │ └── text_cleaning.py
-├── prompts/
-│ ├── cv_master_prompt.txt
-│ ├── cv_one_page_prompt.txt
-│ ├── cover_letter_prompt.txt
-├── profile/
-│ ├── profile.yml
-│ ├── experiences.md
-│ └── projects.md
-├── templates/
-│ ├── cv_template.tex
-│ └── cover_template.tex
-├── scripts/
-│ ├── test_llm_generation.py
-│ ├── ingest_jobs.py
-│ ├── scoring_test.py
-│ └── generate_docs_for_job.py
-└── generated_jobs/
-
-
----
-
-## 3. Job Ingestion
-
-### Source  
-Currently implemented: **Adzuna API**  
-Planned: France Travail, Jooble, Indeed (if supported), custom scrapers.
-
-### Processing Steps
-
-1. Fetch jobs from API.
-2. Normalize fields (title, company, city, contract, description).
-3. Compute `job_id` using SHA-1 to avoid duplicates.
-4. Filter jobs using deterministic rules:
-   - Exclude internships, alternance, apprenticeships.
-   - Exclude senior/executive postings.
-   - Extract location using custom regex patterns.
-5. Write job entries to Google Sheets with columns:
-
-job_id | source | title | company | city | country | url |
-description | created_at | status
-
-
-Statuses:
-- `NEW`: newly ingested
-- `SKIPPED`: excluded by rules
-- `LLM_READY`: ready for scoring and CV generation
+├── src/job_hunter_ai/        # Main package
+│   ├── __init__.py           # Package initialization
+│   ├── config.py             # Configuration management
+│   ├── scoring.py            # Job scoring logic
+│   ├── llm/                  # LLM integration
+│   │   ├── groq_client.py    # Groq API client
+│   │   └── enrich.py         # CV/cover letter generation
+│   ├── latex/                # LaTeX rendering
+│   │   └── render_template.py
+│   └── drive/                # Google Drive integration
+│       └── upload.py
+├── scripts/                  # Utility scripts
+│   ├── filter_jobs.py        # Job filtering
+│   ├── ingest_adzuna_to_sheets.py
+│   └── generate_docs_for_job.py
+├── profile/                  # Your profile data
+│   ├── profile.yml           # Skills, experience, etc.
+│   ├── experiences.md        # Work history
+│   └── projects.md           # Project descriptions
+├── prompts/                  # LLM prompt templates
+│   ├── cv_master_prompt.txt
+│   ├── cv_one_page_prompt.txt
+│   └── cover_letter_prompt.txt
+├── templates/                # LaTeX templates
+│   ├── cv_template.tex
+│   └── cover_template.tex
+├── tests/                    # Test suite
+│   └── test_imports.py
+└── .github/workflows/        # CI/CD
+    └── ci.yml
+```
 
 ---
 
-## 4. Deterministic Scoring System
+## 🎯 Usage
 
-Implemented in `scoring/scoring.py`.
+### 1. Configure Your Profile
 
+Edit files in the `profile/` directory:
+- **profile.yml** - Your skills, experience, location
+- **experiences.md** - Detailed work history
+- **projects.md** - Technical projects with bullets
+
+### 2. Ingest Jobs
+
+Fetch jobs from Adzuna and save to Google Sheets:
+```bash
+python scripts/ingest_adzuna_to_sheets.py
+```
+
+### 3. Filter Jobs
+
+Apply filtering rules to mark jobs as ready for LLM processing:
+```bash
+python scripts/filter_jobs.py
+```
+
+### 4. Generate Application Documents
+
+For a specific job:
+```bash
+python scripts/generate_docs_for_job.py
+```
+
+This will:
+1. Score the job (deterministic + LLM)
+2. Generate tailored CV content
+3. Generate cover letter
+4. Render LaTeX files
+5. (Optional) Upload to Google Drive
+
+Generated files will be in `build/jobs/<job_id>/`
+
+---
+
+## 📊 Scoring System
+
+### Hybrid Scoring
+Combines deterministic and LLM-based scoring:
+
+```python
+final_score = 0.60 * llm_score + 0.40 * deterministic_score
+```
+
+### Deterministic Score (0-100)
+Based on:
+- **Skills overlap** - Match between job requirements and your profile
+- **Architecture bonus** (+20 max) - Mentions of your architecture patterns
+- **Domain bonus** (+10 max) - Relevant industry experience
+- **Seniority penalty** (-20) - Too senior or too many years required
+
+### LLM Score (0-100)
 Evaluates:
-- Required vs. optional keyword matches
-- Cloud & data engineering technologies
-- SQL, Python, PySpark, Airflow, Kafka, Terraform
-- Minimum required experience
-- Role title similarity
-- Disqualifying signals
-
-Produces a score from **0 to 100**.
+- Overall fit for the role
+- Relevance of your experience
+- Project alignment
+- Skill transferability
 
 ---
 
-## 5. Hybrid LLM Scoring
+## 🧪 Testing
 
-The hybrid score combines deterministic and LLM perspectives.
+### Run All Tests
+```bash
+pytest tests/ -v
+```
 
-### Inputs to LLM:
-- Job description
-- Your profile (`profile.yml`)
-- Experiences (`experiences.md`)
-- Projects (`projects.md`)
+### Test Import Validation
+```bash
+pytest tests/test_imports.py -v
+```
 
-### Outputs:
-- `summary`
-- `experience` (tailored bullets per job)
-- `projects` (selected high-relevance projects)
-- `skills_focus`
-- `fit_reasoning`
-- `llm_score` (0–100)
-
-### Final Score
-
-
-final_score = 0.65 * deterministic_score + 0.35 * llm_score
-
+### Test with Coverage
+```bash
+pytest tests/ --cov=src/job_hunter_ai --cov-report=html
+```
 
 ---
 
-## 6. Knowledge Base
+## 🔧 Development
 
-Stored under `/profile/`.
+### Install Development Dependencies
+```bash
+pip install -r requirements-dev.txt
+```
 
-### profile.yml  
-Contains structured data:
-- Identity  
-- Location  
-- Years of experience  
-- Seniority  
-- Technical stack  
-- Architecture experience  
-- Domain exposure  
-- Strengths  
+### Set Up Pre-commit Hooks
+```bash
+pre-commit install
+```
 
-### experiences.md  
-Rich descriptions of:
-- Socotec  
-- Leyton  
-- Bourse de Casablanca  
-- Wafa Gestion  
+### Run Pre-commit Manually
+```bash
+pre-commit run --all-files
+```
 
-### projects.md  
-Projects with:
-- One-liner  
-- Technical bullets  
-- Stack used  
-- Practical value  
+### Code Formatting
+```bash
+black src/ scripts/ tests/
+```
 
-This knowledge base ensures:
-- Consistency
-- No hallucinated content
-- High realism
-- Strong project relevance
+### Linting
+```bash
+flake8 src/ scripts/ tests/ --max-line-length=100
+```
 
 ---
 
-## 7. LLM Prompts
+## 🌐 Environment Variables
 
-### cv_master_prompt.txt  
-Produces a rich, multi-section JSON containing:
-- Detailed bullets per experience
-- Selected projects with one-liners
-- Skills to emphasize
-- Professional summary
+Create a `.env` file in the project root:
 
-### cv_one_page_prompt.txt  
-Compresses master content into:
-- A one-page CV  
-- Limited bullet count  
-- Role alignment  
-- High-density technical impact  
+```bash
+# REQUIRED
+GROQ_API_KEY=your_groq_api_key_here
 
-### cover_letter_prompt.txt  
-Generates:
-- Intro paragraph referencing company  
-- 3–4 technical paragraphs  
-- Closing paragraph  
-- Professional tone  
+# OPTIONAL
+GROQ_MODEL=llama-3.3-70b-versatile
+GROQ_TEMPERATURE=0.2
+GROQ_TIMEOUT=60
 
----
+# Adzuna API
+ADZUNA_APP_ID=your_app_id
+ADZUNA_APP_KEY=your_app_key
 
-## 8. LaTeX Rendering
+# Google Sheets
+GOOGLE_SHEETS_SPREADSHEET_NAME=job_pipeline
+GOOGLE_SHEETS_WORKSHEET_NAME=daily_jobs
 
-The system:
-1. Loads a `.tex` template (resume or cover letter).
-2. Fills placeholders with LLM outputs.
-3. Writes a full `.tex` file to:
-
-generated_jobs/<job_id>/
-
-
-PDF compilation is intentionally not automated because of inconsistent LaTeX engines on Windows.  
-Instead, users upload `.tex` to Overleaf or compile with MiKTeX manually.
+# Google Drive (Optional)
+# GOOGLE_DRIVE_FOLDER_ID=your_folder_id
+# GOOGLE_CREDENTIALS_PATH=/path/to/credentials.json
+```
 
 ---
 
-## 9. n8n Integration (Planned)
+## 🔄 CI/CD Pipeline
 
-The pipeline will be orchestrated via n8n:
+The project includes a comprehensive CI/CD pipeline that runs on every push and pull request:
 
-[ Cron Trigger ]
-↓
-[ Call ingest_jobs.py ]
-↓
-[ Call scoring + LLM generation ]
-↓
-[ Generate CV + Cover Letter ]
-↓
-[ Upload to Google Drive ]
-↓
-[ Update Google Sheets ]
-↓
-[ Notify user ]
+### Jobs
+- **Lint** - Code quality checks (black, flake8)
+- **Test** - Unit tests across Python 3.10, 3.11, 3.12 on Ubuntu & Windows
+- **Integration** - Import validation and script compilation
+- **Security** - Dependency scanning with safety and bandit
+- **Build Status** - Overall pipeline status
 
-
-Future additions:
-- Auto-apply for supported APIs
-- Retry logic
-- Weekly job summary email
-- Telegram/Discord notifications
+### View Pipeline
+[GitHub Actions](https://github.com/Frandiiile/job-hunter-ai/actions)
 
 ---
 
-## 10. Requirements
+## 📦 Dependencies
 
-Python:
-python >= 3.10
-groq
-requests
-gspread
-google-auth
-PyYAML
-python-dotenv
+### Core
+- `groq` - Groq LLM API client
+- `requests` - HTTP requests
+- `PyYAML` - Configuration parsing
+- `python-dotenv` - Environment variable management
+
+### Google Integration
+- `gspread` - Google Sheets API
+- `google-auth` - Google authentication
+
+### Development
+- `pytest` - Testing framework
+- `black` - Code formatter
+- `flake8` - Linter
+- `bandit` - Security scanner
+- `pre-commit` - Git hooks
+
+See [requirements.txt](requirements.txt) for full list.
+
+---
+
+## 📚 How It Works
+
+1. **Job Ingestion**
+   - Fetch jobs from Adzuna API
+   - Normalize and deduplicate using SHA-1 hashing
+   - Store in Google Sheets with status tracking
+
+2. **Filtering**
+   - Apply rule-based filters (seniority, keywords, years)
+   - Mark jobs as `NEW`, `SKIPPED`, or `READY_LLM`
+
+3. **Scoring**
+   - Calculate deterministic score based on skills overlap
+   - Generate LLM score based on semantic fit
+   - Combine into hybrid score (bounded ±25 from deterministic)
+
+4. **Document Generation**
+   - Generate master CV with all relevant experience
+   - Compress to one-page CV optimized for ATS
+   - Generate tailored cover letter
+   - Render LaTeX templates
+
+5. **Output**
+   - `.tex` files ready for compilation or upload to Overleaf
+   - Optional Google Drive upload
+   - Pipeline tracking in Google Sheets
+
+---
+
+## 🔮 Roadmap
+
+- [ ] n8n workflow orchestration
+- [ ] Additional job sources (France Travail, LinkedIn)
+- [ ] Auto-apply functionality
+- [ ] Email/Telegram notifications
+- [ ] PDF compilation automation
+- [ ] Web UI dashboard
+- [ ] Analytics and reporting
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Run tests and linting
+4. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- [Groq](https://groq.com/) for fast LLM inference
+- [Adzuna](https://www.adzuna.com/) for job listing API
+- LaTeX community for document templates
+
+---
+
+## 📧 Contact
+
+For questions or issues, please [open an issue](https://github.com/Frandiiile/job-hunter-ai/issues) on GitHub.
