@@ -1,8 +1,23 @@
+"""
+DEPRECATED: This module is kept for backward compatibility.
+Please use render_template.py directly.
+
+Legacy wrapper around render_template module.
+"""
+
 from __future__ import annotations
 from pathlib import Path
 from typing import Dict, List
 
+# Import canonical implementations
+from .render_template import (
+    latex_escape as escape_latex,
+    bullets_to_latex as bullets_to_items,
+    render_cv_template,
+    render_cover_template,
+)
 
+# Keep old constant for backward compatibility
 LATEX_SPECIALS = {
     "\\": r"\textbackslash{}",
     "&": r"\&",
@@ -17,27 +32,10 @@ LATEX_SPECIALS = {
 }
 
 
-def escape_latex(s: str) -> str:
-    s = s or ""
-    out = []
-    for ch in s:
-        out.append(LATEX_SPECIALS.get(ch, ch))
-    return "".join(out)
-
-
-def bullets_to_items(bullets: List[str]) -> str:
-    # Your template already has \begin{itemize} ... \end{itemize}
-    # so here we output only \item lines.
-    lines = []
-    for b in bullets:
-        b = escape_latex(b.strip())
-        if b:
-            lines.append(r"\item " + b)
-    return "\n".join(lines)
-
-
 def projects_to_items(project_items: List[Dict[str, str]]) -> str:
     """
+    DEPRECATED: Use render_template.render_cv_template instead.
+
     Expect list of dicts like:
     {"name": "AskMyData (NL → SQL)", "bullet": "Developed ... (FastAPI, pgvector, Docker)"}
     """
@@ -53,6 +51,11 @@ def projects_to_items(project_items: List[Dict[str, str]]) -> str:
 
 
 def render_template(template_path: str, replacements: Dict[str, str]) -> str:
+    """
+    DEPRECATED: Use render_template.render_cv_template or render_cover_template.
+
+    Legacy generic template renderer.
+    """
     tex = Path(template_path).read_text(encoding="utf-8")
     for key, value in replacements.items():
         tex = tex.replace(key, value)
@@ -68,6 +71,9 @@ def render_cv(
     wafa_bullet: str,
     project_items: List[Dict[str, str]],
 ) -> str:
+    """
+    DEPRECATED: Use render_template.render_cv_template instead.
+    """
     replacements = {
         "%%PROFILE_SUMMARY%%": escape_latex(profile_summary.strip()),
         "%%SOCOTEC_BULLETS%%": bullets_to_items(socotec_bullets),
@@ -85,6 +91,9 @@ def render_cover(
     company: str,
     cover_body: str,
 ) -> str:
+    """
+    DEPRECATED: Use render_template.render_cover_template instead.
+    """
     replacements = {
         "%%JOB_TITLE%%": escape_latex(job_title.strip()),
         "%%COMPANY%%": escape_latex((company or "").strip()),

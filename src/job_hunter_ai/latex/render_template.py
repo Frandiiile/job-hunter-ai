@@ -97,3 +97,39 @@ def render_cover_template(template_str: str, job: Dict[str, Any], cl_json: Dict[
         template_str = template_str.replace(key, val)
 
     return template_str
+
+
+# ----------------------------------------------------------
+#             GENERIC TEMPLATE RENDERER (Auto-detect)
+# ----------------------------------------------------------
+def render_template(
+    template_str: str,
+    job: Dict[str, Any],
+    llm_output: Dict[str, Any],
+) -> str:
+    """
+    Generic template renderer that auto-detects CV vs Cover Letter.
+
+    This function provides backward compatibility with scripts that use
+    a generic render_template interface.
+
+    Args:
+        template_str: LaTeX template string
+        job: Job dict with at least 'title'
+        llm_output: LLM output dict
+
+    Returns:
+        Rendered LaTeX string
+
+    Note:
+        Detection logic:
+        - If llm_output has 'cover_letter' key -> render as cover letter
+        - Otherwise -> render as CV
+    """
+    # Auto-detect template type based on llm_output structure
+    if "cover_letter" in llm_output:
+        # It's a cover letter
+        return render_cover_template(template_str, job, llm_output["cover_letter"])
+    else:
+        # It's a CV
+        return render_cv_template(template_str, job, llm_output)

@@ -251,7 +251,29 @@ class HybridScore:
 # Core scoring
 # -----------------------------
 def compute_deterministic_score(profile: Dict, job: Dict) -> DeterministicScore:
+    """
+    Compute deterministic score for a job based on profile.
+
+    Args:
+        profile: Profile dict (must have 'technical_stack')
+        job: Job dict (must have 'title' and/or 'description')
+
+    Returns:
+        DeterministicScore with detailed breakdown
+
+    Raises:
+        ValueError: If required fields are missing or invalid
+    """
+    # Input validation
+    if not isinstance(profile, dict):
+        raise ValueError("profile must be a dict")
+    if not isinstance(job, dict):
+        raise ValueError("job must be a dict")
+
     job_text = f"{job.get('title', '')}\n{job.get('description', '')}"
+    if not job_text.strip():
+        raise ValueError("job must have either 'title' or 'description'")
+
     job_text_norm = normalize_text(job_text)
 
     profile_skills = flatten_profile_skills(profile)

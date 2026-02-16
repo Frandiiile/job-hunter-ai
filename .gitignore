@@ -1,5 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+*.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Documentation (not tracked)
+CHANGELOG.md
+MIGRATION.md
+
+# Generated files
+generated_test/
+*.tex
+*.pdf
+*.log
+*.aux
+*.out
+
+# Secrets and credentials
+secrets/
 secrets/service-account.json
 secrets/*.json
-.env
-*.env
+*.key
+*.pem
+credentials.json
+service-account.json
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Project specific
+generated_jobs/
+n8n_data/

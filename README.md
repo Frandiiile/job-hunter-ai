@@ -1,6 +1,11 @@
 # Job Hunter AI – Automated Resume and Cover Letter Generation
 
-Job Hunter AI is an end-to-end automation system designed to streamline the job application process for Data Engineering roles.  
+[![CI Pipeline](https://github.com/YOUR_USERNAME/job-hunter-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/job-hunter-ai/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Job Hunter AI is an end-to-end automation system designed to streamline the job application process for Data Engineering roles.
 It automates job ingestion, filtering, scoring, and the generation of tailored resumes and cover letters using LaTeX and LLMs (Groq).
 
 The goal of the system is to eliminate repetitive manual application tasks and to produce high-quality, role-specific application documents.

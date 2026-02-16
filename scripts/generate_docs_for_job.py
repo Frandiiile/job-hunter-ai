@@ -1,8 +1,8 @@
 import json
 import os
 from pathlib import Path
-from src.job_hunter_ai.latex.render import render_template
-from src.job_hunter_ai.drive.upload import upload_to_drive  # you will create this
+from src.job_hunter_ai.latex.render_template import render_template
+from src.job_hunter_ai.drive.upload import upload_to_drive
 from src.job_hunter_ai.llm.enrich import enrich_with_llm
 from src.job_hunter_ai.scoring import compute_hybrid_score
 import yaml
@@ -38,8 +38,8 @@ def main():
     cv_tex = Path("templates/cv_template.tex").read_text()
     cover_tex = Path("templates/cover_template.tex").read_text()
 
-    filled_cv = render_template(cv_tex, llm_output)
-    filled_cover = render_template(cover_tex, llm_output)
+    filled_cv = render_template(cv_tex, job, llm_output)
+    filled_cover = render_template(cover_tex, job, llm_output)
 
     cv_path = out_dir / "cv.tex"
     cover_path = out_dir / "cover_letter.tex"
