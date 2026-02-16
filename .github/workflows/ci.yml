@@ -80,8 +80,8 @@ jobs:
     - name: Verify package structure
       run: |
         python -c "import sys; print(f'Python {sys.version}')"
-        python -c "from src.job_hunter_ai.scoring import compute_hybrid_score; print('✓ Scoring imports work')"
-        python -c "from src.job_hunter_ai.config import GROQ_MODEL; print(f'✓ Config works: {GROQ_MODEL}')"
+        python -c "from src.job_hunter_ai.scoring import compute_hybrid_score; print('[OK] Scoring imports work')"
+        python -c "from src.job_hunter_ai.config import GROQ_MODEL; print(f'[OK] Config works: {GROQ_MODEL}')"
 
     - name: Run import tests
       run: pytest tests/test_imports.py -v --tb=short
@@ -120,10 +120,10 @@ jobs:
     - name: Verify all module imports
       run: |
         echo "Testing core module imports..."
-        python -c "from src.job_hunter_ai import compute_hybrid_score, compute_deterministic_score; print('✓ Core imports OK')"
-        python -c "from src.job_hunter_ai.llm.enrich import enrich_with_llm, generate_master_cv; print('✓ LLM imports OK')"
-        python -c "from src.job_hunter_ai.latex.render_template import render_template; print('✓ LaTeX imports OK')"
-        python -c "from src.job_hunter_ai.drive.upload import upload_to_drive; print('✓ Drive imports OK')"
+        python -c "from src.job_hunter_ai import compute_hybrid_score, compute_deterministic_score; print('[OK] Core imports OK')"
+        python -c "from src.job_hunter_ai.llm.enrich import enrich_with_llm, generate_master_cv; print('[OK] LLM imports OK')"
+        python -c "from src.job_hunter_ai.latex.render_template import render_template; print('[OK] LaTeX imports OK')"
+        python -c "from src.job_hunter_ai.drive.upload import upload_to_drive; print('[OK] Drive imports OK')"
 
     - name: Check script imports
       run: |
@@ -131,7 +131,7 @@ jobs:
         python -m py_compile scripts/filter_jobs.py
         python -m py_compile scripts/generate_docs_for_job.py
         python -m py_compile scripts/test_llm_generation.py
-        echo "✓ All scripts compile successfully"
+        echo "[OK] All scripts compile successfully"
 
     - name: Validate configuration
       run: |
@@ -144,7 +144,7 @@ jobs:
         assert PROFILE_DIR.exists(), 'Profile directory not found'
         assert PROMPTS_DIR.exists(), 'Prompts directory not found'
         assert TEMPLATES_DIR.exists(), 'Templates directory not found'
-        print('✓ All directories validated')
+        print('[OK] All directories validated')
         "
 
   security:
@@ -175,7 +175,7 @@ jobs:
       continue-on-error: true
 
     - name: Upload Bandit report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: bandit-security-report
@@ -196,8 +196,8 @@ jobs:
         echo "Security status: ${{ needs.security.result }}"
 
         if [ "${{ needs.lint.result }}" == "failure" ] || [ "${{ needs.test.result }}" == "failure" ] || [ "${{ needs.integration.result }}" == "failure" ]; then
-          echo "❌ Build failed"
+          echo "[FAIL] Build failed"
           exit 1
         else
-          echo "✅ Build passed"
+          echo "[PASS] Build passed"
         fi
