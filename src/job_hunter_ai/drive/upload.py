@@ -1,93 +1,71 @@
-"""
-Google Drive upload functionality.
+from __future__ import annotations
 
-This module provides functions to upload generated documents to Google Drive.
-Requires Google Drive API credentials.
-"""
-
+import os
 from pathlib import Path
 from typing import Optional
-import logging
 
-# Import config
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from job_hunter_ai.config import (
-    GOOGLE_DRIVE_FOLDER_ID,
-    GOOGLE_CREDENTIALS_PATH,
-)
-
-logger = logging.getLogger(__name__)
-
-
-class DriveUploadError(Exception):
-    """Raised when Drive upload fails."""
-    pass
-
-
-def upload_to_drive(file_path: Path, folder_id: Optional[str] = None) -> str:
-    """
-    Upload a file to Google Drive.
-
-    Args:
-        file_path: Path to file to upload
-        folder_id: Optional Drive folder ID (uses config default if None)
-
-    Returns:
-        Public URL to uploaded file
-
-    Raises:
-        DriveUploadError: If upload fails or credentials are missing
-
-    TODO: Implement actual Google Drive API integration.
-    This is a placeholder that will be implemented when Drive integration is needed.
-
-    Future implementation will use:
-    - google-api-python-client
-    - service account credentials from GOOGLE_CREDENTIALS_PATH
-    - folder ID from config or parameter
-    """
-    logger.warning(
-        "Drive upload is not yet implemented. "
-        "File would be uploaded: %s",
-        file_path
-    )
-
-    # For now, return a placeholder URL
-    # Real implementation would use google-api-python-client
-    return f"https://drive.google.com/file/placeholder/{file_path.name}"
-
-
-# Future implementation sketch:
-"""
-from google.oauth2 import service_account
+from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-def upload_to_drive_impl(file_path: Path, folder_id: Optional[str] = None) -> str:
-    '''Real implementation using Google Drive API.'''
-    if not GOOGLE_CREDENTIALS_PATH:
-        raise DriveUploadError("GOOGLE_CREDENTIALS_PATH not configured")
 
-    credentials = service_account.Credentials.from_service_account_file(
-        GOOGLE_CREDENTIALS_PATH,
-        scopes=['https://www.googleapis.com/auth/drive.file']
+DRIVE_SCOPES = ["https://www.googleapis.com/auth/drive"]
+
+
+def _get_drive_service():
+    creds_path = os.getenv("GOOGLE_CREDENTIALS_PATH")
+    if not creds_path:
+        raise RuntimeError(
+            "GOOGLE_CREDENTIALS_PATH is not set. Point it to your service account JSON."
+        )
+
+    creds_file = Path(creds_path)
+    if not creds_file.exists():
+        raise RuntimeError(f"Service account JSON not found: {creds_file}")
+
+    creds = Credentials.from_service_account_file(str(creds_file), scopes=DRIVE_SCOPES)
+    return build("drive", "v3", credentials=creds, cache_discovery=False)
+
+
+def _guess_target_folder_id(file_path: Path) -> Optional[str]:
+    name = file_path.name.lower()
+    # Simple heuristic; adjust if your filenames differ
+    if "cover" in name:
+        return os.getenv("GOOGLE_DRIVE_COVER_LETTERS_FOLDER_ID")
+    if "cv" in name or "resume" in name:
+        return os.getenv("GOOGLE_DRIVE_RESUMES_FOLDER_ID")
+    return os.getenv("GOOGLE_DRIVE_FOLDER_ID")  # optional fallback
+
+
+def upload_to_drive(file_path: Path | str, folder_id: str | None = None) -> str:
+    """
+    Uploads a file to Google Drive (service account).
+    Returns a webViewLink.
+    """
+    file_path = Path(file_path)
+    if not file_path.exists():
+        raise FileNotFoundError(f"File not found: {file_path}")
+
+    service = _get_drive_service()
+
+    target_folder_id = folder_id or _guess_target_folder_id(file_path)
+    if not target_folder_id:
+        raise RuntimeError(
+            "No Drive folder configured. Set GOOGLE_DRIVE_RESUMES_FOLDER_ID and "
+            "GOOGLE_DRIVE_COVER_LETTERS_FOLDER_ID (or pass folder_id explicitly)."
+        )
+
+    file_metadata = {"name": file_path.name, "parents": [target_folder_id]}
+
+    media = MediaFileUpload(
+        str(file_path),
+        resumable=True,
     )
 
-    service = build('drive', 'v3', credentials=credentials)
+    created = (
+        service.files()
+        .create(body=file_metadata, media_body=media, fields="id, webViewLink")
+        .execute()
+    )
 
-    file_metadata = {
-        'name': file_path.name,
-        'parents': [folder_id or GOOGLE_DRIVE_FOLDER_ID]
-    }
-
-    media = MediaFileUpload(str(file_path), resumable=True)
-
-    file = service.files().create(
-        body=file_metadata,
-        media_body=media,
-        fields='id, webViewLink'
-    ).execute()
-
-    return file.get('webViewLink')
-"""
+    return created["webViewLink"]

@@ -3,7 +3,7 @@ import re
 import hashlib
 import requests
 import gspread
-from google.auth import default
+from google.oauth2.service_account import Credentials
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -105,13 +105,21 @@ def connect_worksheet():
     spreadsheet_name = os.environ["GOOGLE_SHEETS_SPREADSHEET_NAME"]
     worksheet_name = os.environ.get("GOOGLE_SHEETS_WORKSHEET_NAME", "job_pipeline")
 
-    creds, _ = default(scopes=[
-        "https://www.googleapis.com/auth/spreadsheets",
-        "https://www.googleapis.com/auth/drive",
-    ])
+    creds_path = os.environ["GOOGLE_CREDENTIALS_PATH"]
+
+    creds = Credentials.from_service_account_file(
+        creds_path,
+        scopes=[
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive",
+        ],
+    )
+
     gc = gspread.authorize(creds)
     sh = gc.open(spreadsheet_name)
     return sh.worksheet(worksheet_name)
+
+
 
 def get_headers(ws) -> list[str]:
     headers = ws.row_values(1)

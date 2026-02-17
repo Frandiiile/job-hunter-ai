@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 import json
 import os
 from pathlib import Path
@@ -22,7 +25,7 @@ def main():
     projects_md = Path("profile/projects.md").read_text()
 
     # Step 1: compute score
-    deterministic = compute_hybrid_score(profile, job)
+    deterministic = compute_hybrid_score(profile, job,llm_score=None)
 
     # Step 2: LLM tailoring
     llm_output = enrich_with_llm(
