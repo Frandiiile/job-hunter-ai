@@ -2,7 +2,7 @@
 groq>=0.4.0
 
 # API and HTTP
-requests>=2.31.0
+requests>=2.33.1
 
 # Google Sheets integration
 gspread>=5.11.0
